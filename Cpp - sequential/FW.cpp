@@ -1,8 +1,9 @@
 #include "FW.h"
 
-FW::FW(int no_of_nodes)
+FW::FW(int no_of_nodes, int no_of_edges)
 {
 	mNoOfNodes = no_of_nodes;
+	mNoOfEdges = no_of_edges;
 
 	mMatrix = new int* [mNoOfNodes + 1];
 
@@ -19,10 +20,10 @@ FW::FW(int no_of_nodes)
 	}
 }
 
-void FW::initialise_matrix() 
+void FW::initialise_matrix(ifstream& graphInit)
 {
-	srand((unsigned)time(NULL));
-	
+	int node1, node2, cost;
+
 	for (int i = 1; i <= mNoOfNodes; i++)
 	{
 		for (int j = 1; j <= mNoOfNodes; j++)
@@ -33,18 +34,17 @@ void FW::initialise_matrix()
 			}
 			else
 			{
-				int randx = rand() % 1000 + 1;
 
-				if (randx < 300)
-				{
-					mMatrix[i][j] = randx;
-				}
-				else
-				{
-					mMatrix[i][j] = INF;
-				}
+				mMatrix[i][j] = INF;
 			}
 		}
+	}
+
+	for (int i = 1; i <= mNoOfEdges; i++)
+	{
+		graphInit >> node1 >> node2 >> cost;
+
+		mMatrix[node1][node2] = cost;
 	}
 }
 

@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <conio.h>
 
 #define INF 99999
 
-void initialise_matrix(int** matrix, int no_of_nodes);
+
+void initialise_matrix(int** matrix, int no_of_nodes, int no_of_edges, FILE* f);
 
 void copy_matrix(int** copy_matrix, int** matrix, int no_of_nodes);
 

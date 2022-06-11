@@ -8,7 +8,6 @@ const distancesMatrix = document.querySelector('#distances-matrix');
 
 const tablesContainer = document.querySelector('#tables-container');
 
-const nodesInput = document.querySelector('#nodes-input');
 const runFWButton = document.querySelector('#run-fw-button');
 
 const pathContainer = document.querySelector('#path-container');
@@ -23,8 +22,30 @@ const pathText = document.querySelector('#path');
 
 const INF = 99999;
 let path = [];
+let string_text;
 
-function initialise_matrix(matrix, no_of_nodes) {
+document.getElementById('inputfile').addEventListener('change', function() {
+              
+    var fr=new FileReader();
+    fr.onload=function(){
+        string_text = fr.result.split(/(\r\n| )+/);
+
+        string_text = arrayRemove(string_text, ' ');
+        string_text = arrayRemove(string_text, '\r\n');
+        string_text = arrayRemove(string_text, '');
+    }
+      
+    fr.readAsText(this.files[0]);
+})
+
+function arrayRemove(arr, value) { 
+
+    return arr.filter(function(ele){ 
+    return ele != value; 
+});
+}
+
+function initialise_matrix(matrix, no_of_nodes, no_of_edges) {
     for(let i = 1; i <= no_of_nodes; i++)
     {
         for(let j = 1; j <= no_of_nodes; j++)
@@ -35,18 +56,17 @@ function initialise_matrix(matrix, no_of_nodes) {
             }
             else
             {
-                let x = Math.floor((Math.random() * 1000) + 1);
-                
-                if(x < 300)
-                {
-                    matrix[i][j] = x;
-                }
-                else
-                {
-                    matrix[i][j] = INF;
-                }
+                matrix[i][j] = INF;
             }
         }
+    }
+    for(let i = 2; i <= no_of_edges * 3; i = i + 3)
+    {
+        let node1 = parseInt(string_text[i]);
+        let node2 = parseInt(string_text[i+1]);
+        let cost = parseInt(string_text[i+2]);
+
+        matrix[node1][node2] = cost;
     }
 }
 
@@ -202,7 +222,8 @@ runFWButton.addEventListener("click", function() {
 
     pathText.style.display = "none";
     
-    let no_of_nodes = parseInt(nodesInput.value);
+    let no_of_nodes = parseInt(string_text[0]);
+    let no_of_edges = parseInt(string_text[1]);
 
     let distances = [];
     for(let i = 1; i <= no_of_nodes; i++)
@@ -224,7 +245,7 @@ runFWButton.addEventListener("click", function() {
         }
     }
 
-    initialise_matrix(distances, no_of_nodes);
+    initialise_matrix(distances, no_of_nodes, no_of_edges);
 
     copy_matrix(copy, distances, no_of_nodes);
 

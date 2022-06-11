@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <time.h>
 #include <iomanip>
@@ -11,12 +12,13 @@ class FW
 {
 private:
 	int mNoOfNodes;
+	int mNoOfEdges;
 	int** mMatrix;
 	int** mCopyMatrix;
 	vector<int> mPath;
 public:
-	FW(int no_of_nodes);
-	void initialise_matrix();
+	FW(int no_of_nodes, int no_of_edges);
+	void initialise_matrix(ifstream& graphInit);
 	void display_apsp_matrix();
 	void display_distances_matrix();
 	void copy_matrix();

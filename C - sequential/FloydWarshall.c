@@ -1,8 +1,8 @@
 #include "FloydWarshall.h"
 
-void initialise_matrix(int** matrix, int no_of_nodes)
+void initialise_matrix(int** matrix, int no_of_nodes, int no_of_edges, FILE* f)
 {
-	srand((unsigned)time(NULL));
+	int node1, node2, cost;
 
 	for (int i = 1; i <= no_of_nodes; i++)
 	{
@@ -14,18 +14,15 @@ void initialise_matrix(int** matrix, int no_of_nodes)
 			}
 			else
 			{
-				int randx = rand() % 1000 + 1;
+				matrix[i][j] = INF;
 
-				if (randx < 300)
-				{
-					matrix[i][j] = randx;
-				}
-				else
-				{
-					matrix[i][j] = INF;
-				}
 			}
 		}
+	}
+	for (int i = 1; i <= no_of_edges; i++) 
+	{
+		fscanf(f, "%d%d%d\n", &node1, &node2, &cost);
+		matrix[node1][node2] = cost;
 	}
 }
 

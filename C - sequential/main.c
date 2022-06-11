@@ -4,7 +4,18 @@
 
 int main()
 {
-	int no_of_nodes = 20;
+	int no_of_nodes, no_of_edges;
+
+	FILE* f;
+	f = fopen("input1.txt", "rt");
+	if (f)
+		printf("The file has been successfuly opened! ");
+	else
+		printf("Error opening file! ");
+
+	printf("\n");
+	fscanf(f, "%d", &no_of_nodes);
+	fscanf(f, "%d\n", &no_of_edges);
 
 	int** distances = (int**)malloc((no_of_nodes + 1) * sizeof(int*));
 	for (int i = 0; i <= no_of_nodes; i++)
@@ -20,7 +31,9 @@ int main()
 
 	int ch, node1, node2;
 
-	initialise_matrix(distances, no_of_nodes);
+	initialise_matrix(distances, no_of_nodes, no_of_edges, f);
+
+	fclose(f);
 
 	copy_matrix(copy, distances, no_of_nodes);
 
@@ -36,8 +49,10 @@ int main()
 	time_FW_millis += (double)(end - start) / (CLOCKS_PER_SEC / 1000);
 	time_FW_s += (double)(end - start) / CLOCKS_PER_SEC;
 
-	printf("Time for FW: %lf milliseconds", time_FW_millis);
-	printf("\nTime for FW: %lf seconds", time_FW_s);
+	printf("\nNo of nodes = %d, no of vertices = %d\n", no_of_nodes, no_of_edges);
+
+	printf("\nTime for FW: %lf milliseconds", time_FW_millis);
+	printf("\nTime for FW: %lf seconds\n", time_FW_s);
 
 	printf("\nDistances matrix:\n");
 	display_matrix(copy, no_of_nodes);
@@ -63,7 +78,7 @@ int main()
 	{
 		free(distances[i]);
 	}
-	
+
 	free(distances);
 
 	for (int i = 0; i <= no_of_nodes; i++)
